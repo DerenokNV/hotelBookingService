@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  mongodb:
+    hostname: mongo
+    image: mongo:6.0.8
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: appdatabase
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.2.0
+    healthcheck:
+      test: [ "CMD", "nc", "-vz", "localhost", "2181" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:6.2.8
+    depends_on:
+      - zookeeper
+    ports:
+      - "9892:9892"
+    healthcheck:
+      test: [ "CMD", "nc", "-vz", "localhost", "9092" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO, kafka.producer.async.DefaultEventHandler=INFO, state.change.logger=INFO"
+      KAFKA_LISTENERS: PLAINTEXT://:9892,INTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://$DOCKERHOST:9892,INTERNAL://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPIC_ENABLE: 'true'
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8082:8080"
+    restart: always
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+
+  postgres-web:
+    image: postgres:13.3
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=app_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
