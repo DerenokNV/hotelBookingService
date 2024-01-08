@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                     .requestMatchers( "/api/user/**" ).hasAnyRole( "USER", "ADMIN" )
                     .requestMatchers( "/api/stat/**" ).hasAnyRole(  "ADMIN" )
                     .requestMatchers( "/api/public/**" ).permitAll()
+                    .requestMatchers( "/swagger-ui/**" ).permitAll()
                     .anyRequest().authenticated() )
             .csrf( AbstractHttpConfigurer::disable )
             .httpBasic( Customizer.withDefaults() )
