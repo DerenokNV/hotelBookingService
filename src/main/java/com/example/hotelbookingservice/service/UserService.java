@@ -1,6 +1,5 @@
 package com.example.hotelbookingservice.service;
 
-
 import com.example.hotelbookingservice.entity.User;
 import com.example.hotelbookingservice.web.dto.PagesRequest;
 

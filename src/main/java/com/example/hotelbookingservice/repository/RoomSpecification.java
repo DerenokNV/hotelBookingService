@@ -4,7 +4,6 @@ import com.example.hotelbookingservice.entity.Room;
 import com.example.hotelbookingservice.web.dto.room.RoomFilterRequest;
 import org.springframework.data.jpa.domain.Specification;
 
-
 public interface RoomSpecification {
 
   static Specification<Room> withFilter( RoomFilterRequest roomFilter ) {

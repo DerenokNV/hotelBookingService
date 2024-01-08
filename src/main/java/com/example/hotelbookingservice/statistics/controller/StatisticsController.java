@@ -2,7 +2,6 @@ package com.example.hotelbookingservice.statistics.controller;
 
 import com.example.hotelbookingservice.statistics.dto.BookingEvent;
 import com.example.hotelbookingservice.statistics.dto.UserEvent;
-import com.example.hotelbookingservice.statistics.entity.MongoUserEntity;
 import com.example.hotelbookingservice.statistics.service.MongoBookingService;
 import com.example.hotelbookingservice.statistics.service.MongoUserService;
 import com.example.hotelbookingservice.statistics.service.Toolkit;

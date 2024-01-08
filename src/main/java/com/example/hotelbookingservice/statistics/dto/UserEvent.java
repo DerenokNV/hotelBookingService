@@ -1,6 +1,5 @@
 package com.example.hotelbookingservice.statistics.dto;
 
-
 import com.example.hotelbookingservice.statistics.entity.MongoUserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
