@@ -4,6 +4,7 @@ import com.example.hotelbookingservice.statistics.service.Toolkit;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -22,7 +23,7 @@ public class DaemonThread extends Thread {
     while ( true ) {
 
       File[] contents =  file.listFiles();
-      if ( contents != null ) {
+      if ( Objects.nonNull( contents )  ) {
         for ( File content : contents ) {
           content.delete();
         }

@@ -35,9 +35,6 @@ public class KafkaServiceListener {
                       @Header(KafkaHeaders.RECEIVED_PARTITION) Integer partition,
                       @Header(KafkaHeaders.RECEIVED_TIMESTAMP) Long timestamp
   ) {
-    log.info( "ORDER_SERVICE 11111 CONSUMER USER" );
-    log.info( "Received message: {}", message );
-    log.info( "Key: {}; Partition: {}; Topic: {}; Timestamp: {}", key, topic, partition, timestamp );
 
     mongoUserService.save( new MongoUserEntity( message.getId(), message.getUserId() ) );
   }
@@ -52,9 +49,6 @@ public class KafkaServiceListener {
                              @Header(KafkaHeaders.RECEIVED_PARTITION) Integer partition,
                              @Header(KafkaHeaders.RECEIVED_TIMESTAMP) Long timestamp
   ) {
-    log.info( "ORDER_SERVICE 22222 CONSUMER BOOKING" );
-    log.info( "Received message: {}", message );
-    log.info( "Key: {}; Partition: {}; Topic: {}; Timestamp: {}", key, topic, partition, timestamp );
 
     mongoBookingService.save( new MongoBookingEntity( message.getId(), message.getUserId(), message.getRoomId(), message.getDtBegin(), message.getDtEnd() ) );
   }
